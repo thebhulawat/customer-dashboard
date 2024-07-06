@@ -17,6 +17,7 @@ async function seedUsers() {
 
   const insertedUsers = await Promise.all(
     users.map(async (user) => {
+      //console.log(user)
       const hashedPassword = await bcrypt.hash(user.password, 10);
       return client.sql`
         INSERT INTO users (id, name, email, password)
@@ -25,7 +26,12 @@ async function seedUsers() {
       `;
     }),
   );
-
+  //console.log(insertedUsers)
+  const allUsers = await (
+    client.sql`SELECT * from users`
+  )
+  //console.log('----')
+  //console.log( allUsers)
   return insertedUsers;
 }
 
@@ -52,6 +58,8 @@ async function seedInvoices() {
     ),
   );
 
+  //console.log(insertedInvoices)
+
   return insertedInvoices;
 }
 
@@ -76,7 +84,8 @@ async function seedCustomers() {
       `,
     ),
   );
-
+   
+  //console.log(insertedCustomers)
   return insertedCustomers;
 }
 
@@ -97,18 +106,20 @@ async function seedRevenue() {
       `,
     ),
   );
-
+  //console.log(insertedRevenue)
   return insertedRevenue;
 }
 
 export async function GET() {
   try {
+    console.log('started seeding')
     await client.sql`BEGIN`;
     await seedUsers();
     await seedCustomers();
     await seedInvoices();
     await seedRevenue();
     await client.sql`COMMIT`;
+    console.log('stopped seeding')
 
     return Response.json({ message: 'Database seeded successfully' });
   } catch (error) {

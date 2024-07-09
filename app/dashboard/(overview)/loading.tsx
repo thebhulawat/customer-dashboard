@@ -1,5 +1,7 @@
 import DashboardSkeleton from "../../ui/skeletons";
 
-export default function() {
+// Give the function a name
+export default function DashboardLoading() {
     return <DashboardSkeleton/>
 }
+

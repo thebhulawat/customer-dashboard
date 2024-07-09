@@ -11,7 +11,6 @@ export default async function Page({params}: {params: {id: string}}) {
       ]);
     if (!invoice) {
         notFound()
-        return
     }
     return (
         <main>
